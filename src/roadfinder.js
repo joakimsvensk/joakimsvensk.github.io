@@ -826,7 +826,7 @@ function getClosestNode(x_wgs,y_wgs,searchradius,radiuslimit,prefeatures,prefeat
 			var filename = x + "_" + y;
 			
 			if (prefeaturetiles.indexOf(filename) == -1){
-				var url = "../doc/nodes/" + filename + ".js";
+				var url = "../roadfinder/doc/nodes/" + filename + ".js";
 				$.getScript(url)
 				.done(function(data, textStatus, jqxhr) {
 					if (window.print_debug) {
@@ -1029,7 +1029,7 @@ function addWayPointToRoute(e) {
 
 function downloadNetTile(tilename, cb) {
 	if (window.nettilesdownloaded.indexOf(tilename) == -1) {
-		var url = "../doc/nets_compressed/" + tilename + ".js";
+		var url = "../roadfinder/doc/nets_compressed/" + tilename + ".js";
 		$.get(url, function(data){},"text")
 		.done(function(data, textStatus, jqxhr) {
 			window.nettilesdownloaded.push(tilename);
