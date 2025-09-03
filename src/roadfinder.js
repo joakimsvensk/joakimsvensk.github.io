@@ -1816,7 +1816,7 @@ var map = L.map('map', {
 	zoomControl: false
 });
 
-var racerLayer = L.tileLayer('/tiles_v2/{z}/{x}/{y}.png', {
+var racerLayer = L.tileLayer('/roadfinder/tiles_v2/{z}/{x}/{y}.png', {
 	tms: false,
 	reuseTiles: true,
 	detectRetina: true,
@@ -1878,7 +1878,7 @@ measurebutton.onAdd = function (map) {
     L.DomEvent.disableClickPropagation(div);
     div.className = 'measure-button measure-button-nonactive leaflet-control leaflet-bar';
     div.id = 'measure-button';
-    div.innerHTML = '<span><img src="../fig/rulericon.png" class="measure-button-image"></span>';
+    div.innerHTML = '<span><img src="../roadfinder/fig/rulericon.png" class="measure-button-image"></span>';
     return div;
 };
 measurebutton.addTo(map);
