@@ -1,0 +1,2 @@
+Header add disablevcache true
+Header add X-Varnish-Control "disabled"

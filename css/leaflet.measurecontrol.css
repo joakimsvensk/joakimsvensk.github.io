@@ -1,0 +1,8 @@
+.leaflet-control-draw-measure{
+  background-image: url(../fig/ruler.png);
+  background-size: 20px 20px;
+}
+.leaflet-control-draw-measure:hover {
+  background-image: url(../fig/ruler.png);
+  background-size: 20px 20px;
+}

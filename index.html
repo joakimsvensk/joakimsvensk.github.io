@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>RoadFinder</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="shortcut icon" href="fig/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="fig/favicon.ico" type="image/x-icon">
+
+  <!--<link rel="stylesheet" href="//unpkg.com/leaflet@1.0.1/dist/leaflet.css" />-->
+  <link rel="stylesheet" href="css/leaflet.css" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/roadfinder.css" />
+
+  <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyAYsclARkhL8Io593FNRwPH7c04ippdJmc" async defer></script>
+  <!--<script src="//unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>-->
+  <script src="lib/leaflet.js"></script>
+  <script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/dist/Leaflet.GoogleMutant.js'></script>
+
+  <script src="jquery-3.3.1.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script src="lib/leaflet-knn.min.js"></script>
+  <script src="lib/proj4-compressed.js"></script>
+  <script src="lib/proj4leaflet.js"></script>
+  <script src="lib/astar.js"></script>
+  <script src="lib/lz-string.min.js"></script>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-86722083-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+    <div id="map">
+    </div>
+
+    <script src="src/roadfinder.js"></script>
+
+    <div class="menu-container">
+		<div class="menu-button-box" id="menu-button-box">
+			<div class="menu-item button menu-info" id="menu-info">INFO</div>
+			<div class="menu-item button menu-route" id="menu-route">RUTT</div>
+			<div class="menu-item button-disabled menu-clear" id="menu-clear">RENSA</div>
+			<div class="menu-item button-disabled menu-export" id="menu-export">EXPORT</div>
+		</div>
+	</div>
+
+	<div class="help-text-container" id="help-text-container">
+		<div class="help-text" id="help-text"></div>
+	</div>
+
+	<div class="alert-message-container" id="alert-message-container">
+		<div class="alert-message-box" id="alert-message-box">
+			<div class="alert-message-text" id="alert-message-text"></div>
+			<div class="alert-message-close-button-container">
+				<div class="alert-message-close-button button" id="alert-message-close-button">STÄNG</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="popup-menu-container" id="export-menu-container">
+		<div class="popup-menu-box" id="export-menu-box">
+			<div class="popup-menu-text" id="export-menu-text">Välj format att exportera</div>
+			<div class="popup-menu-large-button button" id="export-menu-gpx-button">Exportera som GPX</div>
+			<div class="popup-menu-large-button button" id="export-menu-geojson-button">Exportera som GeoJSON</div>
+			<div class="popup-menu-close-button-container">
+				<div class="popup-menu-close-button button" id="export-menu-close-button">AVBRYT</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="popup-menu-container" id="nav-menu-container">
+		<div class="popup-menu-box" id="nav-menu-box">
+			<div class="popup-menu-text" id="nav-menu-text">Välj typ av rutt</div>
+			<div class="popup-menu-large-button button" id="nav-menu-round-button">Samma start och mål</div>
+			<div class="popup-menu-large-button button" id="nav-menu-route-button">Från A till B</div>
+			<div class="popup-menu-close-button-container">
+				<div class="popup-menu-close-button button" id="nav-menu-close-button">AVBRYT</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="popup-menu-container" id="route-menu-container">
+		<div class="popup-menu-box" id="route-menu-box">
+			<div class="popup-menu-text" id="route-menu-text">Välj prioritering</div>
+			<div class="popup-menu-text-small">1=kortast väg, 5=bäst väg</div>
+			<div class="popup-menu-value" id="route-menu-value">3</div>
+			<input class="popup-slider" id="route-slider" type="range" min="1" max="5" step="1" value="3" data-orientation="vertical">
+			<div class="popup-menu-large-button button" id="route-menu-start-button">OK</div>
+			<div class="popup-menu-close-button-container">
+				<div class="popup-menu-close-button button" id="route-menu-close-button">AVBRYT</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="popup-menu-container" id="round-menu-container">
+		<div class="popup-menu-box" id="round-menu-box">
+			<div class="popup-menu-text" id="round-menu-text">Välj mål-längd på rundan</div>
+			<div class="popup-menu-value" id="round-menu-value">50 km</div>
+			<input class="popup-slider" id="round-slider" type="range" min="10" max="150" step="5" value="50" data-orientation="vertical">
+			<div class="popup-menu-large-button button" id="round-menu-start-button">OK</div>
+			<div class="popup-menu-close-button-container">
+				<div class="popup-menu-close-button button" id="round-menu-close-button">AVBRYT</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="toolbar-container" id="toolbar-container">
+		<div class="toolbar-button-box" id="toolbar-button-box">
+			<div class="toolbar-item button toolbar-cancel" id="toolbar-cancel">AVBRYT</div>
+			<div class="toolbar-item button-disabled toolbar-undo" id="toolbar-undo">ÅNGRA</div>
+			<div class="toolbar-item button-disabled toolbar-done" id="toolbar-done">KLAR</div>
+		</div>
+	</div>
+
+    <div class="info-content-container" id="info-content-container">
+        <div class="info-content" id="info-content">
+          <div class="info-header">
+            <h4 class="info-title">RoadFinder</h4>
+          </div>
+          <div class="info-body">
+            <p class="justify">RoadFinder visar alla <b>asfaltsvägar</b> i Sverige med en färgklassning efter hur bra och säkra de är för <b>cykling</b>, uträknat från tillåten maxhastighet, trafikmängd och vägbredd.</p>
+            <p class="justify">Det finns fem nivår med olika färger. Alla färgade vägar är asfalterade. Grusvägar är alltid grå och tunna.</p>
+            <div class="center">
+                <div class="levelrow"><span class="levelbar level1">Nivå 1</span><span class="leveldescription">Riktigt bra väg!</span></div>
+                <div class="levelrow"><span class="levelbar level2">Nivå 2</span><span class="leveldescription">Bra, säker och trevlig</span></div>
+                <div class="levelrow"><span class="levelbar level3">Nivå 3</span><span class="leveldescription">Helt OK men inte perfekt</span></div>
+                <div class="levelrow"><span class="levelbar level4">Nivå 4</span><span class="leveldescription">Olämplig men åkbar</span></div>
+                <div class="levelrow"><span class="levelbar level5">Nivå 5</span><span class="leveldescription">Förbjuden eller farlig!</span></div><br />
+            </div>
+
+            <details class="more-info">
+                <summary><span class="show-more-info">Rutt och Export</span></summary>
+                <div class="more-info-content">
+                    <br />
+                    <p class="justify">I RoadFinder finns en funktion för att beräkna en rutt i det klassade vägnätet. För att rita en rutt, tryck på <i>RUTT</i> i menyn. Det finns två typer av rutter:
+					<ul><li>En automatiskt beräknad runda med önskad längd och samma start och målpunkt. Följ instruktionerna för att välja önskad längd och startpunkt. RoadFinder söker efter lämpliga rundor. När beräkningen är klar visas den bästa rundan.</li>
+					<li>En rutt från en vald startpunkt till en annan vald slutpunkt (Från A till B). Följ instruktionerna för att markera en startpunkt och en eller flera punkter att passera. Avsluta genom att trycka på <i>KLAR</i> längst ner på skärmen.</li>
+					</ul></p>
+					<p class="justify">Det går att rita flera rutter efter varandra som då visas samtidigt. För att rensa alla ritade rutter, tryck på <i>RENSA</i> i menyn.</p>
+                    <p class="justify">För att exportera en rutt, tryck på <i>EXPORT</i> i menyn. Rutten exporteras som en fil i formatet <i>.gpx</i> som kan läsas av de flesta navigerings- och tränings-appar till mobil och dator.</p>
+					<p class="justify">En rutt beräknas genom en avvägning mellan kortast väg och bäst väg enligt klassningen. Rutten följer bara asfaltsvägar. Rutten kan följa en väg i nivå 5 (mörkröd), men bara om det är mycket kortare än alla andra alternativ.</p>
+				</div>
+            </details>
+			<details class="more-info">
+                <summary><span class="show-more-info">Mer om klassningen</span></summary>
+                <div class="more-info-content">
+                    <br />
+                    <p class="justify">Klassningen är gjord automatiskt och bygger på <a href="http://www.trafikverket.se/tjanster/Oppna_data/" target="_blank">Trafikverkets öppna data</a> från <a href="http://nvdb.se/sv" target="_blank">NVDB</a> om <b>hastighet</b>, <b>trafikmängd</b> och <b>vägbredd</b>. Även motorväg, motortrafikled och tättbebyggt område tas hänsyn till. Observera att kvaliteten på asfalten inte tas hänsyn till!</p>
+                    <p class="justify"> Matematiska funktioner används för att beräkna vilken nivå en väg har. Högre hastighet eller större trafikmängd ger sämre nivå på vägen. Dessa parametrar påverkar också klassningen mer om vägen är smal än om den är bred. En bredare väg ger oftast bättre nivå eftersom det blir mer plats för cyklister, med undantag för nivå 1 (turkos) som förutom väldigt lite trafik också är extra smal. Nivå 1 är tänkt att hitta de riktigt små och fina vägarna! Utöver det har även vanliga cykelvägar nivå 1.</p>
+                    <p class="justify">RoadFinder är framförallt gjord för att visa landsvägar, utanför tätorter. Vägar inne i tätorter är svåra att klassa och stämmer inte alltid så bra.</p>
+                    <p class="justify">Tänk på att uppgiften om asfalt eller grus ibland kan vara fel i NVDB. Det blir då fel i RoadFinder också. Klassningen av cykelvägar inne i tätorter (nivå 1/turkos) varierar också ganska mycket mellan olika kommuner. All data är hämtad i mars 2018. Uppenbara fel i datan (tex grus/asfalt) som är äldre än så kan gärna rapporteras till Trafikverkets <a href="http://www.nvdb.se/sv/kund/avvikelserapportering/" target="_blank">avvikelserapportering</a>.</p>
+					<p class="justify">Tänk också på att färgerna är automatiskt klassade och inte stämmer till 100%. Vad som är en bra och säker väg beror ju dessutom på vem man frågar.</p>
+                    </div>
+            </details>
+			<details class="more-info">
+                <summary><span class="show-more-info">Datakällor och programvaror</span></summary>
+                <div class="more-info-content">
+                    <br />
+                    <p class="justify">RoadFinder använder <a href="http://leafletjs.com/" target="_blank">Leaflet</a> som kartmotor. Platsnamn i desktop-versionen använder tillägget <a href="https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant" target="_blank">Google Mutant</a>. Ruttberäkningen använder en <a href="https://github.com/bgrins/javascript-astar" target="_blank">implementation</a> av <a href="https://en.wikipedia.org/wiki/A*_search_algorithm" target="_blank">algoritmen A*</a> (<a href="https://github.com/bgrins/javascript-astar/blob/master/LICENSE" target="_blank">© Brian Grinstead</a>) och <a href="https://github.com/mapbox/leaflet-knn" target="_blank">Leaflet-KNN</a> (<a href="https://github.com/mapbox/leaflet-knn/blob/master/LICENSE" target="_blank">© 2017, Mapbox</a>).  Kartdata kommer från <a href="http://nvdb.se/sv" target="_blank">NVDB</a> (<a href="https://creativecommons.org/publicdomain/zero/1.0/deed.sv" target="_blank">CC0 1.0</a>) och <a href="https://carto.com" target="_blank">Carto</a>.</p>
+                    <p class="justify">Lämna gärna synpunkter till <i>&#105;&#110;&#102;&#111;&#064;&#114;&#111;&#097;&#100;&#102;&#105;&#110;&#100;&#101;&#114;&#046;&#115;&#101;</i></p>
+                </div>
+            </details>
+            <p class="text-right smaller"><i>© 2016-2020 Joakim Svensk</i></p>
+            <br />
+			<br />
+            </div>
+            <div class="close-info-container">
+                <div class="button close-info" id="close-info">STÄNG</div>
+            </div>
+        </div>
+    </div>
+
+	<div class="gray-background" id="gray-background"></div>
+
+</body>
+</html>
