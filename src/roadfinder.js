@@ -5,7 +5,7 @@
 
 // GLOBAL DEFINITIONS
 
-this.static_files_url = "https://pub-88e7e9e2eabe421b9ffae40f404b56a5.r2.dev/";
+this.static_files_url = "https://pub-88e7e9e2eabe421b9ffae40f404b56a5.r2.dev";
 
 this.print_debug = false;
 
