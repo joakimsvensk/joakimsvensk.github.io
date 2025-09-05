@@ -5,6 +5,8 @@
 
 // GLOBAL DEFINITIONS
 
+this.static_files_url = "https://pub-88e7e9e2eabe421b9ffae40f404b56a5.r2.dev/";
+
 this.print_debug = false;
 
 this.menu_enabled = true;
@@ -826,7 +828,7 @@ function getClosestNode(x_wgs,y_wgs,searchradius,radiuslimit,prefeatures,prefeat
 			var filename = x + "_" + y;
 			
 			if (prefeaturetiles.indexOf(filename) == -1){
-				var url = "../roadfinder/doc/nodes/" + filename + ".js";
+				var url = this.static_files_url + "/nodes/" + filename + ".js";
 				$.getScript(url)
 				.done(function(data, textStatus, jqxhr) {
 					if (window.print_debug) {
@@ -1029,7 +1031,7 @@ function addWayPointToRoute(e) {
 
 function downloadNetTile(tilename, cb) {
 	if (window.nettilesdownloaded.indexOf(tilename) == -1) {
-		var url = "../roadfinder/doc/nets_compressed/" + tilename + ".js";
+		var url = this.static_files_url + "/nets_compressed/" + tilename + ".js";
 		$.get(url, function(data){},"text")
 		.done(function(data, textStatus, jqxhr) {
 			window.nettilesdownloaded.push(tilename);
@@ -1816,7 +1818,7 @@ var map = L.map('map', {
 	zoomControl: false
 });
 
-var racerLayer = L.tileLayer('/roadfinder/tiles_v2/{z}/{x}/{y}.png', {
+var racerLayer = L.tileLayer(this.static_files_url + '/tiles/{z}/{x}/{y}.png', {
 	tms: false,
 	reuseTiles: true,
 	detectRetina: true,
