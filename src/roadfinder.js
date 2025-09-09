@@ -1849,7 +1849,7 @@ if (isMobile()){
 	labelLayer = L.gridLayer.googleMutant({
 		type: 'roadmap',
 		styles: [
-			{elementType: 'roads', stylers: [{visibility: 'off'}]},
+			// {elementType: 'roads', stylers: [{visibility: 'off'}]},
 			{elementType: 'labels', stylers: [{visibility: 'on'}]}
 		]
 	});
@@ -1880,7 +1880,7 @@ measurebutton.onAdd = function (map) {
     L.DomEvent.disableClickPropagation(div);
     div.className = 'measure-button measure-button-nonactive leaflet-control leaflet-bar';
     div.id = 'measure-button';
-    div.innerHTML = '<span><img src="../roadfinder/fig/rulericon.png" class="measure-button-image"></span>';
+    div.innerHTML = '<span><img src="../fig/rulericon.png" class="measure-button-image"></span>';
     return div;
 };
 measurebutton.addTo(map);
