@@ -1813,7 +1813,7 @@ var map = L.map('map', {
 	center: [59.76, 15.51],
 	zoom: 7,
 	minZoom: 7,
-	maxZoom: 14,
+	maxZoom: 13,
 	tapTolerance: 30,
 	zoomControl: false
 });
@@ -1822,7 +1822,7 @@ var racerLayer = L.tileLayer(this.static_files_url + '/tiles/{z}/{x}/{y}.png', {
 	tms: false,
 	reuseTiles: true,
 	detectRetina: true,
-	maxNativeZoom: 13,
+	maxNativeZoom: 12,
 	attribution: '<a href="https://nvdb.se/sv" target="_blank">NVDB</a>',
 	className: 'racer-layer'
 }).addTo(map);
@@ -1849,7 +1849,7 @@ if (isMobile()){
 	labelLayer = L.gridLayer.googleMutant({
 		type: 'roadmap',
 		styles: [
-			// {elementType: 'roads', stylers: [{visibility: 'off'}]},
+			{elementType: 'roads', stylers: [{visibility: 'off'}]},
 			{elementType: 'labels', stylers: [{visibility: 'on'}]}
 		]
 	});
