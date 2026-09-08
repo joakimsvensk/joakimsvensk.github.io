@@ -1,6 +1,6 @@
 //----------------------------------------
 // ROADFINDER v2.0
-// Copyright Joakim Svensk 2016-2020
+// Copyright Joakim Svensk 2016-
 //----------------------------------------
 
 // GLOBAL DEFINITIONS
@@ -1803,10 +1803,10 @@ function panToRound(round, cb) {
 
 // SET UP MAP
 
-var baseLayerUrl = "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png";
+var baseLayerUrl = "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png?key=cb1_31i3_1_01c961a3dfe6ce64f902b7ca";
 var baseLayerAttribution = "<a href='https://carto.com' target='_blank'>Carto</a>";
 
-var labelLayerUrl = "https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}@2x.png";
+var labelLayerUrl = "https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}@2x.png?key=cb1_31i3_1_01c961a3dfe6ce64f902b7ca";
 var labelLayerAttribution = "";
 
 var map = L.map('map', {
