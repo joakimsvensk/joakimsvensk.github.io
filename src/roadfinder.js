@@ -1822,7 +1822,7 @@ var racerLayer = L.tileLayer(this.static_files_url + '/tiles/{z}/{x}/{y}.png', {
 	tms: false,
 	reuseTiles: true,
 	detectRetina: true,
-	maxNativeZoom: 13,
+	maxNativeZoom: 12,
 	attribution: '<a href="https://nvdb.se/sv" target="_blank">NVDB</a>',
 	className: 'racer-layer'
 }).addTo(map);
