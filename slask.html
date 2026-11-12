@@ -1,26 +1,60 @@
+
 <!DOCTYPE html>
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ånnaboda skidspår</title>
+  <title>Ånnaboda skidspår – Senaste nytt</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+
+    .facebook-feed {
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
 
+<div class="container">
   <h1>Ånnaboda skidspår</h1>
 
-  <div style="width:100%; max-width:500px; margin:auto;">
-    <iframe
-      src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fannabodaskidspar&tabs=timeline&width=500&height=750&adapt_container_width=true&hide_cover=false&show_facepile=false"
-      width="500"
-      height="750"
-      style="border:none; width:100%;"
-      scrolling="no"
-      frameborder="0"
-      allowfullscreen="true"
-      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
-    </iframe>
+  <div class="facebook-feed">
+    <div id="fb-root"></div>
+
+    <script async defer crossorigin="anonymous"
+      src="https://connect.facebook.net/sv_SE/sdk.js#xfbml=1&version=v23.0">
+    </script>
+
+    <div class="fb-page"
+      data-href="https://www.facebook.com/annabodaskidspar"
+      data-tabs="timeline"
+      data-width="550"
+      data-height="800"
+      data-small-header="false"
+      data-adapt-container-width="true"
+      data-hide-cover="false"
+      data-show-facepile="false">
+    </div>
   </div>
+</div>
 
 </body>
 </html>
